@@ -2,11 +2,11 @@ from machine import Pin
 from neopixel import NeoPixel
 import time
 
-headlight_pin = 16 # D0
+headlight_pin = 2 # D4
 headlight_toggle = 0 # D3
 np_pin = 5 # D1
-np_toggle = 2 # D4
-np_change = 4 # D2
+np_toggle = 12 # D6
+np_change = 13 # D7
 
 # Setup outputs
 headlight_pin_v = Pin(headlight_pin, Pin.OUT)
@@ -28,26 +28,35 @@ colors = {
 }
 
 def light_pixel(color):
-	np[1] = colors['off']
+	global np
+	np[0] = colors['off']
 	np.write()
 	if(not color == 'off'):
-		np[1] = colors[color]
+		np[0] = colors[color]
 		np.write()
 
-while True:
+def switch():
+	global np_value
+	if(np_value == 'green'):
+		np_value = 'yellow'
+	elif(np_value == 'yellow'):
+		np_value = 'red'
+	else:
+		np_value = 'green'
+
+def run():
+	global headlight_toggle_v
+	global headlight_pin_v
+	global np_toggle_v
+	global np_change_v
 	if(headlight_toggle_v.value()):
-		headlight_pin_v.on()
+		headlight_pin_v.value(1)
 	else():
-		headlight_pin_v.off()
+		headlight_pin_v.value(0)
 	if(np_toggle_v.value()):
-		if(np_change_v.value()):
-			if(np_value == 'green'):
-				np_value = 'yellow'
-			elif(np_value == 'yellow'):
-				np_value = 'red'
-			else:
-				np_value = 'green'
+		if(not np_change_v.value()):
+			switch()
 		light_pixel(np_value)
 	else:
 		light_pixel('off')
-	time.sleep(0.01)
+	time.sleep(0.15)

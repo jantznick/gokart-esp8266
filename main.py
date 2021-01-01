@@ -1,13 +1,11 @@
 from machine import Pin
 from neopixel import NeoPixel
 import time
-
-headlight_pin = 4 # D2
-headlight_toggle = 14  # D5
-np_pin = 5 # D1
-np_toggle = 12 # D6
-np_change = 13 # D7
-
+headlight_pin = 5 #D1
+headlight_toggle = 14 #D5
+np_pin = 4 #D2
+np_toggle = 13 #D7
+np_change = 12 #D6
 # Setup outputs
 headlight_pin_v = Pin(headlight_pin, Pin.OUT)
 np = NeoPixel(Pin(np_pin), 1)
